@@ -5,7 +5,7 @@
 
 from time import time, sleep
 from datetime import datetime, timedelta
-import os
+from os import system, uname
 
 class timer():
     def __init__(self, begin, end):
@@ -22,12 +22,12 @@ class timer():
 
 
         # Verificação do sistema Operacional
-        if(os.uname()[0] == 'Linux'):
+        if(uname()[0] == 'Linux'):
             self.cmd = 'clear'
         else:
             self.cmd = 'cls'
 
-        os.system(self.cmd)
+        system(self.cmd)
         pass
 
     def _set_actual_time(self):
@@ -59,10 +59,10 @@ class timer():
         self.end = self.end.now() + timedelta(minutes=+self.pomodoro_time)
 
         while  self.end > self.dif:
-            os.system(self.cmd)
+            system(self.cmd)
             self.update_times()
 
-        os.system(self.cmd)
+        system(self.cmd)
         pass
 
     def start_short_break(self):
@@ -72,10 +72,10 @@ class timer():
         self.end = self.end.now() + timedelta(minutes=+self.short_break)
 
         while  self.end > self.dif:
-            os.system(self.cmd)
+            system(self.cmd)
             self.update_times()
 
-        os.system(self.cmd)
+        system(self.cmd)
         pass
 
     def start_long_break(self):
@@ -85,14 +85,14 @@ class timer():
         self.end = self.end.now() + timedelta(minutes=+self.long_break)
 
         while  self.end > self.dif:
-            os.system(self.cmd)
+            system(self.cmd)
             self.update_times()
 
-        os.system(self.cmd)
+        system(self.cmd)
         pass
 
     def status_var(self):
-        os.system(self.cmd)
+        system(self.cmd)
         str_status = ('Configurações dos tempos: \n' +
                         '{3}\t{0:>02d} min.\n' +
                         '{4}\t{1:>02d} min.\n' + 
@@ -109,16 +109,16 @@ class timer():
 
     def configure(self):
         # Limpa a tela
-        os.system(self.cmd)
+        system(self.cmd)
 
         self.pomodoro_time = int(input("Entre com o tempo do Pomodoro: "))
         self.short_break = int(input("Entre com o tempo do Short Break: "))
         self.long_break = int(input("Entre com o tempo do Long Break: "))
-        os.system(self.cmd)
+        system(self.cmd)
         pass
 
     def instrucoes(self):
-        os.system(self.cmd)
+        system(self.cmd)
         str_instrucoes = '''
 The Pomodoro Technique is a time and focus management method which improves productivity and quality of work.
 The name comes from a kitchen timer, which can be used to keep track of time. In short, you are supposed to 
