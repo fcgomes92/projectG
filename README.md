@@ -3,8 +3,10 @@
 
 <p>A Pomodoro Timer Console App.</p>
 <p>Uses:
-	<p>time</p>
-	<p>datetime</p>
-	<p>os</p>
-	<p>pygame</p>
+<ul>
+	<li>time</li>
+	<li>datetime</li>
+	<li>os</li>
+	<li>pygame</li>
+</ul>
 </p>
