@@ -16,11 +16,12 @@ class timer():
         self.begin = datetime.now()
         self.dif = datetime.now()
         self.end = datetime.now()
+        self.play_music = True
         
         # Nome e caminho padrão do evento sonoro
         self.finish_sound = 'media/alarm.ogg'
         mixer.music.load(self.finish_sound)
-        mixer.music.play(1)
+        if self.play_music : mixer.music.play(1)
         
         # Intervalos de tempos
         # variaáveis para possível customização
@@ -41,7 +42,7 @@ class timer():
             self.pomodoro_time = 25
             self.long_break = 30
             self.short_break = 5
-        # Segundo modo de representaçãp
+        # Segundo modo de representação
         # das variáveis acima.
         '''
         self.config = {
@@ -91,11 +92,17 @@ class timer():
         self.end = self.end.now() + timedelta(minutes=+self.pomodoro_time)
 
         while  self.end > self.dif:
-            system(self.cmd)
-            self.update_times()
+            try:
+                system(self.cmd)
+                self.update_times()
+            except KeyboardInterrupt:
+                self.play_music=False
+                print("Parando o processo!")
+                break
 
         system(self.cmd)
-        mixer.music.play(3)
+        if self.play_music: mixer.music.play(3)
+        self.play_music = True
         pass
 
     def start_short_break(self):
@@ -105,11 +112,17 @@ class timer():
         self.end = self.end.now() + timedelta(minutes=+self.short_break)
 
         while  self.end > self.dif:
-            system(self.cmd)
-            self.update_times()
-
+            try:
+                system(self.cmd)
+                self.update_times()
+            except KeyboardInterrupt:
+                self.play_music = False
+                print("Parando o processo!")
+                break
+           
         system(self.cmd)
-        mixer.music.play(3)
+        if self.play_music: mixer.music.play(3)
+        self.play_music = True
         pass
 
     def start_long_break(self):
@@ -119,11 +132,17 @@ class timer():
         self.end = self.end.now() + timedelta(minutes=+self.long_break)
 
         while  self.end > self.dif:
-            system(self.cmd)
-            self.update_times()
+            try:
+                system(self.cmd)
+                self.update_times()
+            except KeyboardInterrupt:
+                self.play_music = False
+                print("Parando o processo!")
+                break
 
         system(self.cmd)
-        mixer.music.play(3)
+        if self.play_music: mixer.music.play(3)
+        self.play_music = True
         pass
 
     def status_var(self):
@@ -206,8 +225,11 @@ Escolha uma opção:
 try:
     escolha = ''
     while escolha!='0':
-        escolha = str(input(str_ops))
-        if escolha in ops : ops[escolha]()
-
+        try:
+            escolha = str(input(str_ops))
+            if escolha in ops : ops[escolha]()
+        except KeyboardInterrupt:
+            print("\nBye bye!\n")
+            break
 except Exception as e:
     print(str(e))
