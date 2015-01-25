@@ -1,7 +1,7 @@
 <h2>projectG</h2><h1>POMODORO TIMER</h1>
 ========
-
-<p>A Pomodoro Timer Console App.</p>
+<p>Soon...</p>
+<p>A Pomodoro Timer QT Based App.</p>
 <p>Uses:
 <ul>
 	<li>time</li>
