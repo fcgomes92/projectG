@@ -1,6 +1,6 @@
 #/usr/env python
 # ProjectG - Pomodoro Timer
-# Interface : terminal
+# Interface : console
 # author: gomes
 
 from time import time, sleep
