@@ -6,22 +6,54 @@
 from time import time, sleep
 from datetime import datetime, timedelta
 from os import system, uname
+from pygame import init, mixer
+
+# Inicia pygame service
+init()
 
 class timer():
-    def __init__(self, begin, end):
-        self.begin = begin
-        self.end = end
-        self.restante = end.now() - begin.now()
+    def __init__(self):
+        self.begin = datetime.now()
         self.dif = datetime.now()
-
+        self.end = datetime.now()
+        
+        # Nome e caminho padrão do evento sonoro
+        self.finish_sound = 'media/alarm.ogg'
+        mixer.music.load(self.finish_sound)
+        mixer.music.play(1)
+        
         # Intervalos de tempos
         # variaáveis para possível customização
-        self.pomodoro_time = 25
-        self.long_break = 30
-        self.short_break = 5
-
+        try:
+            # Le os valores de inicialização
+            # do arquivo de config : config.data
+            config_file = open('config.data')
+            self.pomodoro_time = int(config_file.readline())
+            self.long_break = int(config_file.readline())
+            self.short_break = int(config_file.readline())
+            config_file.close()    
+        except Exception as e:
+            # Caso não consiga abrir o arquivo
+            # Inicializa e mostra um erro.
+            template = "An exception of type {0} occured. Arguments:\n{1!r}"
+            message = template.format(type(e).__name__, ex.args)
+            print (message)
+            self.pomodoro_time = 25
+            self.long_break = 30
+            self.short_break = 5
+        # Segundo modo de representaçãp
+        # das variáveis acima.
+        '''
+        self.config = {
+            "pomodoro_time":25, 
+            "long_break" = 30,
+            "short_break" = 5
+            }
+        '''
 
         # Verificação do sistema Operacional
+        # para setar o comando que limpa
+        # a tela
         if(uname()[0] == 'Linux'):
             self.cmd = 'clear'
         else:
@@ -63,6 +95,7 @@ class timer():
             self.update_times()
 
         system(self.cmd)
+        mixer.music.play(3)
         pass
 
     def start_short_break(self):
@@ -76,6 +109,7 @@ class timer():
             self.update_times()
 
         system(self.cmd)
+        mixer.music.play(3)
         pass
 
     def start_long_break(self):
@@ -89,6 +123,7 @@ class timer():
             self.update_times()
 
         system(self.cmd)
+        mixer.music.play(3)
         pass
 
     def status_var(self):
@@ -114,6 +149,21 @@ class timer():
         self.pomodoro_time = int(input("Entre com o tempo do Pomodoro: "))
         self.short_break = int(input("Entre com o tempo do Short Break: "))
         self.long_break = int(input("Entre com o tempo do Long Break: "))
+
+        # Tentativa de persistir os dados
+        # de configuração no arquivo: config.data
+        try:
+            config_file = open('config.data', 'w')
+            config_file.write(str(self.pomodoro_time) + "\n")
+            config_file.write(str(self.long_break) + "\n")
+            config_file.write(str(self.short_break) + "\n")
+            config_file.close()
+        except Exception as e:
+            template = "An exception of type {0} occured. Arguments:\n{1!r}"
+            message = template.format(type(e).__name__, ex.args)
+            print (message)
+            print("As informações de configuração não foram persistidas.")
+
         system(self.cmd)
         pass
 
@@ -131,7 +181,7 @@ You can read more on pomodoro technique here: http://pomodorotechnique.com/
         print(str_instrucoes)
         pass
 
-t = timer(datetime.now(), (datetime.now()))
+t = timer()
 ops = {
         '1' :   t.start_pomodoro
     ,   '2' :   t.start_short_break
