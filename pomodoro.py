@@ -66,17 +66,35 @@ class timer():
     def _set_actual_time(self):
         self.begin = datetime.now()
         self.dif = datetime.now()
-        #self.restante = self.begin
         pass
 
     def update_times(self):
         # Atualiza a quantidade de tempo restante
-        self.restante = self.end.now() - self.dif.now()
-
-        print("Tempo inicial:\t" + str(self.begin.time()))
-        print("Tempo corrente:\t" + ":".join(str(i) for i in [self.dif.hour,self.dif.minute,self.dif.second]))
-        print("Tempo final:\t" + str(self.end.time()))
-        print("Tempo restante:\t" + str(self.restante))
+        self.restante = self.end.__sub__(self.dif)
+        
+        print("Tempo inicial:\t"+":".join(  #Concatena os valores entre pontos
+                                                                str("{0:>02d}").format(i)  #Formatação para que menores que 10 possuam um zero à esquerda
+                                                                for i in [self.begin.hour,self.begin.minute,self.begin.second]  # Gerador dos valores a serem concatenados
+                                                            )
+                )
+        print("Tempo corrente:\t"+":".join(
+                                                                    str("{0:>02d}").format(i)
+                                                                    for i in [self.dif.hour,self.dif.minute,self.dif.second]
+                                                                )
+                )
+        print("Tempo final:\t"+":".join(
+                                                                    str("{0:>02d}").format(i)
+                                                                    for i in [self.end.hour,self.end.minute,self.end.second]
+                                                        )
+                )
+        print("Tempo restante:\t"+":".join(
+                                                                    str("{0:>02d}").format(int(i))
+                                                                    for i in (
+                                                                                    (self.restante.__str__()).split(".")[0].split(":") # Primeiramente separa os milésimos e depois controi uma
+                                                                                                                                                            # lista utilizando as horas minutos e segundos
+                                                                                )
+                                                                )
+                )
 
         # Tempo entre atualizações
         sleep(0.5)
