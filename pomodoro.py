@@ -17,6 +17,8 @@ class timer():
         self.dif = datetime.now()
         self.end = datetime.now()
         self.play_music = True
+        self.count_short_breaks = 0
+        self.count_pomodoro_cycles = 0
         
         # Nome e caminho padrão do evento sonoro
         self.finish_sound = 'media/alarm.ogg'
@@ -139,7 +141,13 @@ class timer():
                 break
            
         system(self.cmd)
-        if self.play_music: mixer.music.play(3)
+        if self.play_music: 
+        	mixer.music.play(3)
+        	self.count_short_breaks += 1
+        	if(self.count_short_breaks%3==0):
+        		print("You should take a long break ;D")
+        		self.count_short_breaks=0
+        		self.count_pomodoro_cycles+=1
         self.play_music = True
         pass
 
@@ -168,13 +176,15 @@ class timer():
         str_status = ('Configurações dos tempos: \n' +
                         '{3}\t{0:>02d} min.\n' +
                         '{4}\t{1:>02d} min.\n' + 
-                        '{5}\t{2:>02d} min.'
+                        '{5}\t{2:>02d} min.\n' +
+                        'Pomodo Cycle: {6}\t'
                     ).format(self.pomodoro_time
                         ,   self.short_break
                         ,   self.long_break
                         ,   'Tempo Pomodoro: '
                         ,   'Tempo Short Break: '
                         ,   'Tempo Long Break: '
+                        ,	self.count_pomodoro_cycles
                         )
         print(str_status)
         pass
